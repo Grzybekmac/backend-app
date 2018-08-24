@@ -57,9 +57,7 @@ app.put("/api/users/:id", (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   user.username = req.body.username;
-  user.email = body.email;
-
-  users.push(user);
+  user.email = req.body.email;
 
   res.send(user);
 });
@@ -77,6 +75,7 @@ app.delete("/api/users/:id", (req, res) => {
 
 function validateUser(user) {
   const schema = {
+    id: Joi.number(),
     username: Joi.string().required(),
     email: Joi.string()
       .email()
