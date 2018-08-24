@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Grzybekmac/backend-app#readme",
   "dependencies": {
+    "config": "^2.0.1",
     "express": "^4.16.3",
     "joi": "^13.6.0"
   }

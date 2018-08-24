@@ -1,13 +1,22 @@
+const config = require("config");
 const Joi = require("joi");
 const express = require("express");
 const app = express();
 
+const allowCrossDomain = function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+};
+
 app.use(express.json());
+app.use(allowCrossDomain);
 
 const users = [
-  { id: 1, name: "abc", email: "abc@abc.pl" },
-  { id: 2, name: "abcd", email: "abcd@abc.pl" },
-  { id: 3, name: "abcde", email: "abcde@abc.pl" }
+  { id: 1, username: "abc", email: "abc@abc.pl" },
+  { id: 2, username: "abcd", email: "abcd@abc.pl" },
+  { id: 3, username: "abcde", email: "abcde@abc.pl" }
 ];
 
 app.get("/api/users", (req, res) => {
@@ -29,7 +38,7 @@ app.post("/api/users", (req, res) => {
 
   const user = {
     id: users.length + 1,
-    name: req.body.name,
+    username: req.body.name,
     email: req.body.email
   };
 
@@ -47,7 +56,7 @@ app.put("/api/users/:id", (req, res) => {
 
   if (error) return res.status(400).send(error.details[0].message);
 
-  user.name = req.body.name;
+  user.username = req.body.username;
   user.email = body.email;
 
   users.push(user);
@@ -75,5 +84,5 @@ function validateUser(user) {
   return Joi.validate(user, schema);
 }
 
-const port = process.env.app || 3000;
+const port = process.env.app || config.get("port");
 app.listen(port, () => console.log(`Listening on port ${port}`));
