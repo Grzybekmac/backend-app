@@ -38,7 +38,7 @@ app.post("/api/users", (req, res) => {
 
   const user = {
     id: users.length + 1,
-    username: req.body.name,
+    username: req.body.username,
     email: req.body.email
   };
 
@@ -77,8 +77,10 @@ app.delete("/api/users/:id", (req, res) => {
 
 function validateUser(user) {
   const schema = {
-    name: Joi.string().required(),
-    email: Joi.email().required()
+    username: Joi.string().required(),
+    email: Joi.string()
+      .email()
+      .required()
   };
 
   return Joi.validate(user, schema);
